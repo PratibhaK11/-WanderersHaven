@@ -1,4 +1,3 @@
-
 const mongoose = require("mongoose");
 const initData = require("./data.js");
 const Listing = require("../models/listing.js");
@@ -7,7 +6,8 @@ const MONGO_URL = "mongodb://127.0.0.1:27017/Wanderer";
 
 main()
   .then(() => {
-    console.log("connected to DB");
+    console.log("Connected to DB");
+    initDB(); // Call initDB after connecting to MongoDB
   })
   .catch((err) => {
     console.log(err);
@@ -31,8 +31,14 @@ const initDB = async () => {
     return listing; // Return unchanged if image is not an object with a URL
   });
 
+  // Add owner property to each listing object
+  const listingsWithOwner = listings.map((obj) => ({
+    ...obj,
+    owner: "66898557e874904c63af58ec"
+  }));
+
   try {
-    await Listing.insertMany(listings);
+    await Listing.insertMany(listingsWithOwner);
     console.log("Data was initialized successfully.");
   } catch (error) {
     console.error("Error initializing data:", error);
@@ -40,7 +46,9 @@ const initDB = async () => {
 };
 
 
-initDB();
+
+
+
 
 
 
