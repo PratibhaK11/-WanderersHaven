@@ -1,3 +1,8 @@
+if (process.env.NODE_ENV != "production") {
+    require('dotenv').config();
+}
+
+
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -21,7 +26,7 @@ const MONGO_URL = "mongodb://127.0.0.1:27017/Wanderer";
 
 main().then(() => {
     console.log("connectred to DB");
-}).catch(err =>{
+}).catch(err => {
     console.log(err);
 });
 
@@ -31,7 +36,7 @@ async function main() {
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
@@ -83,16 +88,16 @@ app.use("/listing/:id/reviews", reviewsRouter);
 app.use("/", userRouter)
 
 
-app.all("*", (req, res, next) =>{
+app.all("*", (req, res, next) => {
     next(new ExpressError(404, "Page not found"));
 });
-app.use((err, req, res, next) =>{
-    let {statusCode=500, message="Something went wrong"} = err;
+app.use((err, req, res, next) => {
+    let { statusCode = 500, message = "Something went wrong" } = err;
     res.status(statusCode).render("error.ejs", { message });
     // res.status(statusCode).send(message);
 
 });
 
-app.listen(8080, ()=> {
+app.listen(8080, () => {
     console.log("Server is listening to port 8080");
 });

@@ -1,86 +1,50 @@
-const mongoose = require("mongoose");
-const initData = require("./data.js");
-const Listing = require("../models/listing.js");
+const mongoose = require('mongoose');
+const Listing = require('../models/listing'); // Adjust path as per your project structure
+const initData = require('./data'); // Assuming this is where your data is defined
 
 const MONGO_URL = "mongodb://127.0.0.1:27017/Wanderer";
 
-main()
-  .then(() => {
-    console.log("Connected to DB");
-    initDB(); // Call initDB after connecting to MongoDB
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-
 async function main() {
-  await mongoose.connect(MONGO_URL);
+    try {
+        await mongoose.connect(MONGO_URL);
+        console.log("Connected to DB");
+
+        await initDB(); // Call initDB after connecting to MongoDB
+    } catch (err) {
+        console.error("Connection error:", err);
+    } finally {
+        mongoose.connection.close(); // Close connection after initialization
+        console.log("Disconnected from DB");
+    }
 }
 
-const initDB = async () => {
-  await Listing.deleteMany({});
+async function initDB() {
+    try {
+        await Listing.deleteMany({});
 
-  const listings = initData.data.map((listing) => {
-    if (typeof listing.image === 'object' && listing.image.url) {
-      // Update image to be the URL string
-      return {
-        ...listing,
-        image: listing.image.url
-      };
+        const listings = initData.data.map((listing) => {
+            // Ensure listing has image object with url property
+            if (listing.image && typeof listing.image === 'object' && listing.image.url) {
+                return {
+                    ...listing,
+                    image: listing.image // Should be { url: listing.image.url, filename: listing.image.filename }
+                };
+            }
+            return listing; // Return unchanged if no valid image URL found
+        });
+
+        // Add owner property to each listing object
+        const listingsWithOwner = listings.map((obj) => ({
+            ...obj,
+            owner: "66898557e874904c63af58ec" // Assuming this is a valid owner ID
+        }));
+
+        await Listing.insertMany(listingsWithOwner);
+        console.log("Data was initialized successfully.");
+    } catch (error) {
+        console.error("Error initializing data:", error);
     }
-    return listing; // Return unchanged if image is not an object with a URL
-  });
+}
 
-  // Add owner property to each listing object
-  const listingsWithOwner = listings.map((obj) => ({
-    ...obj,
-    owner: "66898557e874904c63af58ec"
-  }));
-
-  try {
-    await Listing.insertMany(listingsWithOwner);
-    console.log("Data was initialized successfully.");
-  } catch (error) {
-    console.error("Error initializing data:", error);
-  }
-};
-
-
-
-
-
-
-
-
-
-
-
-// const mongoose = require("mongoose");
-// const initData = require("./data.js");
-// const Listing = require("../models/listing"); 
-
-// const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
-
-// main()
-//   .then(() => {
-//     console.log("Connected to DB");
-//     initDB();
-//   })
-//   .catch((err) => {
-//     console.error("Error connecting to DB:", err);
-//   });
-
-// async function main() {
-//   await mongoose.connect(MONGO_URL);
-// }
-
-// async function initDB() {
-//   try {
-//     await Listing.deleteMany({});
-//     await Listing.insertMany(initData.data);
-//     console.log("Data was initialized");
-//   } catch (err) {
-//     console.error("Error initializing data:", err);
-//   }
-// }
+main();
 
