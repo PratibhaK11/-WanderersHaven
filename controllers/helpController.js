@@ -5,7 +5,7 @@ const User = require('../models/user');
 const sendMail = require('../utils/email');
 const { v4: uuidv4 } = require('uuid');
 
-// Function to generate a unique booking reference number
+// Function to generate a unique ticket reference number
 function generateRandomReference() {
     const timestamp = Date.now().toString(36);
     const randomString = Math.random().toString(36).substr(2, 5);
