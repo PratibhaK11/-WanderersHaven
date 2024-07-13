@@ -1,0 +1,17 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container mt-4">
+  <h1 class="mb-4">Booking History</h1>
+
+  <div class="booking-list">
+    <% bookings.forEach(booking => { %>
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title"><%= booking.listing.title %></h5>
+          <p class="card-text"><strong>Date:</strong> <%= booking.bookingDate.toDateString() %></p>
+          <p class="card-text"><strong>Number of Guests:</strong> <%= booking.numberOfGuests %></p>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</div>

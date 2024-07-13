@@ -1,0 +1,28 @@
+<!-- views/booking.ejs -->
+
+<% layout("/layouts/boilerplate") %> <!-- Assuming you have a layout file -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="mt-5 mb-4">Book Listing</h2>
+            <% if (error && error.length > 0) { %>
+                <div class="alert alert-danger" role="alert">
+                    <%= error %>
+                </div>
+            <% } %>
+            <form action="/bookings" method="POST">
+                <div class="mb-3">
+                    <label for="numberOfGuests" class="form-label">Number of Guests</label>
+                    <input type="number" class="form-control" id="numberOfGuests" name="numberOfGuests" required>
+                </div>
+                <div class="mb-3">
+                    <label for="bookingDate" class="form-label">Booking Date</label>
+                    <input type="date" class="form-control" id="bookingDate" name="bookingDate" required>
+                </div>
+                <input type="hidden" name="listingId" value="<%= listing._id %>">
+                <button type="submit" class="btn btn-primary">Book Now</button>
+            </form>
+        </div>
+    </div>
+</div>

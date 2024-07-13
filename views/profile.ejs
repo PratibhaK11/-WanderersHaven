@@ -1,0 +1,74 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-lg-3">
+      <div class="card">
+        <div class="card-body text-center">
+          <img src="https://via.placeholder.com/150" class="rounded-circle img-fluid mb-3" alt="Profile Picture">
+          <h4 class="card-title"><%= user.username %></h4>
+          <p class="card-text"><%= user.email %></p>
+          <a href="/profile/edit" class="btn btn-outline-primary btn-sm">Edit Profile</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-9">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Update Profile</h5>
+          <form action="/profile/update" method="POST">
+            <div class="mb-3">
+              <label for="email" class="form-label">Email:</label>
+              <input type="email" class="form-control" id="email" name="email" value="<%= user.email %>" required>
+            </div>
+            <!-- Add more fields as needed -->
+            <button type="submit" class="btn btn-primary">Update Profile</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Booking History</h5>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Listing</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% bookings.forEach(function(booking, index) { %>
+                <tr>
+                  <th scope="row"><%= index + 1 %></th>
+                  <td><%= booking.listing.title %></td>
+                  <td><%= booking.bookingDate.toDateString() %></td>
+                  <td>Confirmed</td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+          <a href="/profile/bookings" class="btn btn-outline-primary btn-sm">See More</a>
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Your Reviews</h5>
+          <ul class="list-group">
+            <% reviews.forEach(function(review) { %>
+              <li class="list-group-item">
+                <strong><%= review.listingTitle %></strong>
+                <p><%= review.comment %></p>
+                <a href="/reviews/<%= review._id %>/edit" class="btn btn-outline-secondary btn-sm">Edit</a>
+                <a href="/reviews/<%= review._id %>/delete" class="btn btn-outline-danger btn-sm">Delete</a>
+              </li>
+            <% }); %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

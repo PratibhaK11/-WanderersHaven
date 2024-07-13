@@ -3,8 +3,11 @@
     <body>
         <script>
             const mapToken = "<%= process.env.MAP_TOKEN %>";
+            const listing = <%- JSON.stringify(listing) %>;
+            
         </script>
 
+        
         <div class="row mt-3">
             <div class="col-8 offset-3">
                 <h3>
@@ -49,8 +52,29 @@
 
             <% } %>
 
+            <!-- Booking -->
+<<<<<<< HEAD
+            <div class="card col-6 offset-3" style="width: 20rem; border-radius: 2rem;box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);">
+            <div class="col-8 offset-3 mt-3 mb-3">
+                <form action="">
+                    <h4><b>&#x20B9; <%= listing.price.toLocaleString("en-IN") %></b>  per guest</h4>
+                    <a href="/bookings?listingId=<%= listing._id %>" class="btn btn-outline-dark booking-btn" style="background-color: orangered; border: none;">Book Now</a>
 
-                <div class="col-8 offset-3 mb-3">
+                </form>
+              </div>
+            </div>
+
+=======
+            <div class="col-8 offset-3 mt-3">
+                <h5 class="card-title">Card title</h5>
+                <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              </div>
+
+>>>>>>> 764f7d8b7aaedc0eba6705d8abe0256dea645f64
+
+
+                <div class="col-8 offset-3 mb-3 mt-3">
                     <% if(currUser){ %>
                         <h4>Lave a Review</h4>
                         <hr>

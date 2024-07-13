@@ -1,24 +1,39 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../models/user.js");
-const wrapAsync = require("../utils/wrapAsync.js");
-const { saveRedirectUrl } = require('../middleware.js'); 
 const passport = require("passport");
+const userController = require("../controllers/users");
+const { isLoggedIn } = require("../middleware");
 
-const userController = require("../controllers/users.js");
+// Local authentication routes
+router.get("/signup", userController.renderSignupForm);
+router.post("/signup", userController.signup);
+router.get("/login", userController.renderLoginForm);
+router.post("/login",
+    passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }),
+    userController.login
+);
+//router.get("/logout", userController.logout);
+// Logout route
+router.get("/logout", (req, res) => {
+    req.logout((err) => {
+        if (err) {
+            console.error("Error logging out:", err);
+            // Optionally handle the error here, such as logging it or sending a response
+        }
+        req.flash("success", "You are logged out!");
+        res.redirect("/listing"); // Redirect to a suitable page after logout
+    });
+});
+// Google OAuth routes
+router.get('/auth/google',
+    passport.authenticate('google', { scope: ['profile', 'email'] })
+);
 
-router.route("/signup")
-    .get(userController.renderSignupForm) // GET request to "/signup" - render signup form
-    .post(wrapAsync(userController.signup)); // POST request to "/signup" - handle signup process
-
-    router.route("/login")
-    .get(userController.renderLoginForm) // GET request to "/login" - render login form
-    .post(
-        saveRedirectUrl,
-        passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }),
-        userController.login
-    ); // POST request to "/login" - handle login process
-
-router.get("/logout", userController.logout)
+router.get('/auth/google/callback',
+    passport.authenticate('google', { failureRedirect: '/login', failureFlash: true }),
+    (req, res) => {
+        res.redirect('/');
+    }
+);
 
 module.exports = router;
