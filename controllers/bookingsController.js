@@ -1,7 +1,7 @@
 // controllers/bookingController.js
 
 const Booking = require('../models/Booking');
-const Listing = require('../models/listing'); // Ensure this is correctly imported
+const Listing = require('../models/listing'); 
 const sendMail = require('../utils/email');
 const { v4: uuidv4 } = require('uuid');
 
@@ -15,9 +15,9 @@ function generateBookingReference() {
 // Get booking history
 exports.getBookingHistory = async (req, res) => {
     try {
-        const userId = req.user._id; // Assuming authenticated user ID
+        const userId = req.user._id; 
         const bookings = await Booking.find({ guest: userId }).populate('listing');
-        res.render('bookingHistory', { bookings }); // Assuming 'bookingHistory' is your view file
+        res.render('bookingHistory', { bookings }); 
     } catch (err) {
         console.error(err);
         req.flash('error', 'Failed to fetch booking history.');
@@ -42,7 +42,7 @@ exports.showBookingForm = async (req, res, next) => {
 
 exports.createBooking = async (req, res, next) => {
     try {
-        const { listingId, numberOfGuests, bookingDate } = req.body;
+        const { listingId, numberOfGuests, checkInDate, checkOutDate, numberOfChildren } = req.body;
         const userId = req.user._id; 
 
         const bookingReference = generateBookingReference();
@@ -53,12 +53,22 @@ exports.createBooking = async (req, res, next) => {
             throw new Error('Listing not found');
         }
 
+        // Validate check-out date
+        const checkIn = new Date(checkInDate);
+        const checkOut = new Date(checkOutDate);
+
+        if (checkOut <= checkIn) {
+            throw new Error('Check-out date must be after the check-in date.');
+        }
+
         // Create booking instance
         const booking = new Booking({
             listing: listingId,
             guest: userId,
             numberOfGuests,
-            bookingDate,
+            checkInDate,
+            checkOutDate,
+            numberOfChildren,
             bookingReference // Save the generated booking reference in the booking document
         });
 
@@ -68,13 +78,15 @@ exports.createBooking = async (req, res, next) => {
         const subject = 'Booking Confirmation';
         const userName = req.user && req.user.name ? req.user.name : 'Guest';
         const html = `
-            <p>Dear ${req.user.name},</p>
-            <p>Your booking for ${listing.title} on ${new Date(bookingDate).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} is confirmed.</p>
+            <p>Dear ${userName},</p>
+            <p>Your booking for ${listing.title} from ${checkIn.toLocaleDateString('en-US')} to ${checkOut.toLocaleDateString('en-US')} is confirmed.</p>
             <p>Booking Details:</p>
             <ul>
                 <li>Listing: ${listing.title}</li>
-                <li>Booking Date: ${new Date(bookingDate).toLocaleDateString('en-US')}</li>
+                <li>Check-In Date: ${checkIn.toLocaleDateString('en-US')}</li>
+                <li>Check-Out Date: ${checkOut.toLocaleDateString('en-US')}</li>
                 <li>Number of Guests: ${numberOfGuests}</li>
+                <li>Number of Children: ${numberOfChildren}</li>
                 <li>Booking Reference: ${bookingReference}</li>
             </ul>
             <p>Thank you for choosing us. We look forward to hosting you!</p>
@@ -83,14 +95,13 @@ exports.createBooking = async (req, res, next) => {
             <p>Wnderer'sHeaven</p>
         `;
 
-       
         await sendMail(userEmail, subject, html);
 
         req.flash('success', 'Booking successful!');
         res.redirect('/listing'); 
     } catch (err) {
         console.error(err);
-        req.flash('error', 'Booking failed. Please try again.');
+        req.flash('error', err.message || 'Booking failed. Please try again.');
         res.redirect('back');
     }
 };

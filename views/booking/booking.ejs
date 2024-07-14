@@ -1,28 +1,57 @@
 <!-- views/booking.ejs -->
 
-<% layout("/layouts/boilerplate") %> <!-- Assuming you have a layout file -->
+<% layout("/layouts/boilerplate") %> 
 
 <div class="container">
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
-            <h2 class="mt-5 mb-4">Book Listing</h2>
-            <% if (error && error.length > 0) { %>
-                <div class="alert alert-danger" role="alert">
-                    <%= error %>
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg">
+                <div class="card-body p-5">
+                    <h2 class="card-title mb-4 text-center">Book Your Stay</h2>
+                    <% if (error && error.length > 0) { %>
+                        <div class="alert alert-danger" role="alert">
+                            <%= error %>
+                        </div>
+                    <% } %>
+                    <form action="/bookings" method="POST" class="needs-validation" novalidate>
+                        <div class="mb-4">
+                            <label for="numberOfGuests" class="form-label fs-5">Number of Guests</label>
+                            <input type="number" class="form-control" id="numberOfGuests" name="numberOfGuests" min="1" required>
+                            <div class="invalid-feedback">
+                                Please enter the number of guests.
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label for="checkInDate" class="form-label fs-5">Check-In Date</label>
+                                <input type="date" class="form-control" id="checkInDate" name="checkInDate" min="<%= new Date().toISOString().split('T')[0] %>" required>
+                                <div class="invalid-feedback">
+                                    Please select a valid check-in date.
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="checkOutDate" class="form-label fs-5">Check-Out Date</label>
+                                <input type="date" class="form-control" id="checkOutDate" name="checkOutDate" min="<%= new Date().toISOString().split('T')[0] %>" required>
+                                <div class="invalid-feedback">
+                                    Please select a valid check-out date.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="numberOfChildren" class="form-label fs-5">Number of Children</label>
+                            <input type="number" class="form-control" id="numberOfChildren" name="numberOfChildren" min="0" required>
+                            <div class="invalid-feedback">
+                                Please enter the number of children.
+                            </div>
+                        </div>
+                        <input type="hidden" name="listingId" value="<%= listing._id %>">
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">Book Now</button>
+                        </div>
+                    </form>
                 </div>
-            <% } %>
-            <form action="/bookings" method="POST">
-                <div class="mb-3">
-                    <label for="numberOfGuests" class="form-label">Number of Guests</label>
-                    <input type="number" class="form-control" id="numberOfGuests" name="numberOfGuests" required>
-                </div>
-                <div class="mb-3">
-                    <label for="bookingDate" class="form-label">Booking Date</label>
-                    <input type="date" class="form-control" id="bookingDate" name="bookingDate" required>
-                </div>
-                <input type="hidden" name="listingId" value="<%= listing._id %>">
-                <button type="submit" class="btn btn-primary">Book Now</button>
-            </form>
+            </div>
         </div>
     </div>
 </div>
+

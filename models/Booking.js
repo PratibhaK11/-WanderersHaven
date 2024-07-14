@@ -1,5 +1,4 @@
-
-
+// models/Booking.js
 const mongoose = require('mongoose');
 
 const bookingSchema = new mongoose.Schema({
@@ -15,7 +14,21 @@ const bookingSchema = new mongoose.Schema({
     },
     numberOfGuests: {
         type: Number,
+        required: true,
+        min: 1
+    },
+    checkInDate: {
+        type: Date,
         required: true
+    },
+    checkOutDate: {
+        type: Date,
+        required: true
+    },
+    numberOfChildren: {
+        type: Number,
+        required: true,
+        min: 0
     },
     bookingDate: {
         type: Date,
