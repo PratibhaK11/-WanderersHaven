@@ -1,37 +1,64 @@
 <% layout("/layouts/boilerplate") %>
 
-<div class="row mt-3">
-    <div class="col-8 offset-3">
-    </div>
+<section class="container mt-4">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         <% if (listings.length > 0) { %>
-            
-                <% listings.forEach(listing => { %>
-
-                    <div class="card col-6 offset-3 search mb-3">
-                        <a href="/listing/<%= listing._id %>" class="search-listing">
-                            <h4 class="search-title"><%= listing.title %></h4>
+            <% listings.forEach(listing => { %>
+                <div class="col mb-4">
+                    <div class="card h-100 border-0 shadow">
+                        <a href="/listing/<%= listing._id %>" class="text-decoration-none text-dark">
+                            <img src="<%= listing.image.url %>" class="card-img-top rounded-top" alt="<%= listing.title %> Image">
+                            <div class="card-body">
+                                <h5 class="card-title mb-0"><%= listing.title %></h5>
+                                <div class="d-flex justify-content-between align-items-center mt-1">
+                                    <p class="card-text text-muted mb-1"><%= listing.description.substring(0, 100) %>...</p>
+                                    <b> <p class="card-text text-muted"><span class="mr-1">&#x20B9;</span><%= listing.price.toLocaleString("en-IN") %></p></b>
+                                </div>
+                                <p class="card-text text-muted mb-1"><%= listing.location %>, <%= listing.country %></p>
+                            </div>
+                            <div class="card-footer bg-transparent border-top">
+                                <small class="text-muted">Click to view details</small>
+                            </div>
                         </a>
-                        <img src="<%=listing.image.url%>" class="card-img-top show-img" alt="listing_image">
-                        <p>&#x20B9; <%= listing.price.toLocaleString("en-IN") %> </p>
-                            <p>
-                                <%= listing.location %>, <%= listing.country %>
-                            </p>
-                    
-
                     </div>
-                <% }); %>
-            
+                </div>
+            <% }); %>
         <% } else { %>
-            <h3>Search Results</h3>
-            <div class="col-12 mt-3" >
-                <p>No listings found</p>
+            <div class="col-12 text-center">
+                <h3>No listings found</h3>
             </div>
-            
         <% } %>
-        
-
-        
-
     </div>
+</section>
 
+<style>
+    .card {
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        border-radius: 10px;
+    }
 
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-img-top {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        max-height: 200px;
+        object-fit: cover;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+
+    .card-text {
+        font-size: 0.875rem;
+    }
+
+    .card-footer {
+        border-top: none;
+    }
+</style>
