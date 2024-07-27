@@ -68,7 +68,7 @@ module.exports.logout = (req, res) => {
     req.logout((err) => {
         if (err) {
             console.error("Error logging out:", err);
-            // Optionally handle the error here, such as logging it or sending a response
+           
         }
         req.session.destroy((err) => {
             if (err) {

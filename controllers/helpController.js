@@ -16,7 +16,7 @@ function generateRandomReference() {
 async function sendMailWithDelay(to, subject, html) {
     try {
         setTimeout(async () => {
-            await sendMail(to, subject, html); // Call sendMail function with proper parameters
+            await sendMail(to, subject, html); 
             console.log('Email sent successfully');
         }, 10000); // 10 seconds delay
     } catch (error) {

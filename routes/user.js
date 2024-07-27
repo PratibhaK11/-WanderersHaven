@@ -1,3 +1,4 @@
+//routes/user.js
 const express = require("express");
 const router = express.Router();
 const passport = require("passport");
@@ -32,8 +33,10 @@ router.get('/auth/google',
 router.get('/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/login', failureFlash: true }),
     (req, res) => {
-        res.redirect('/');
+        res.redirect('/listing');
     }
 );
+
+
 
 module.exports = router;

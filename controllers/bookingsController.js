@@ -43,7 +43,7 @@ exports.showBookingForm = async (req, res, next) => {
 exports.createBooking = async (req, res, next) => {
     try {
         const { listingId, numberOfGuests, checkInDate, checkOutDate, numberOfChildren } = req.body;
-        const userId = req.user._id; 
+        const userId = req.user._id;
 
         const bookingReference = generateBookingReference();
 
@@ -53,7 +53,6 @@ exports.createBooking = async (req, res, next) => {
             throw new Error('Listing not found');
         }
 
-        // Validate check-out date
         const checkIn = new Date(checkInDate);
         const checkOut = new Date(checkOutDate);
 
@@ -61,7 +60,6 @@ exports.createBooking = async (req, res, next) => {
             throw new Error('Check-out date must be after the check-in date.');
         }
 
-        // Create booking instance
         const booking = new Booking({
             listing: listingId,
             guest: userId,
@@ -69,10 +67,14 @@ exports.createBooking = async (req, res, next) => {
             checkInDate,
             checkOutDate,
             numberOfChildren,
-            bookingReference // Save the generated booking reference in the booking document
+            bookingReference
         });
 
         await booking.save();
+
+        // Increment booking count for the listing
+        listing.bookingCount = (listing.bookingCount || 0) + 1;
+        await listing.save();
 
         const userEmail = req.user.email;
         const subject = 'Booking Confirmation';
@@ -92,13 +94,13 @@ exports.createBooking = async (req, res, next) => {
             <p>Thank you for choosing us. We look forward to hosting you!</p>
             <p>Best regards,</p>
             <p>Booking Team</p>
-            <p>Wnderer'sHeaven</p>
+            <p>Wanderer's Haven</p>
         `;
 
         await sendMail(userEmail, subject, html);
 
         req.flash('success', 'Booking successful!');
-        res.redirect('/listing'); 
+        res.redirect('/listing');
     } catch (err) {
         console.error(err);
         req.flash('error', err.message || 'Booking failed. Please try again.');

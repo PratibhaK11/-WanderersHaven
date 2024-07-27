@@ -21,6 +21,7 @@ const reviewsRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 const bookingsRouter = require('./routes/bookings');
 const searchRouter = require('./routes/search');
+const helpRoutes = require('./routes/help');
 
 const MONGO_URL = "mongodb://127.0.0.1:27017/Wanderer";
 
@@ -101,6 +102,7 @@ app.use('/search', searchRouter);
 app.use('/profile', profileRoutes);
 app.use("/", userRouter);
 app.use('/bookings', bookingsRouter);
+app.use('/help', helpRoutes);
 
 // Error Handling
 app.all("*", (req, res, next) => {

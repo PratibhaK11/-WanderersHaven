@@ -7,6 +7,19 @@ module.exports.index = async (req, res) => {
     const allListing = await Listing.find({});
     res.render("listings/index.ejs", { allListing });
 };
+exports.showTrendingListings = async (req, res) => {
+    console.log('Trending route hit');
+    try {
+        const listings = await Listing.find()
+            .sort({ searchCount: -1, bookingCount: -1 }) // Sort by search count and booking count
+            .exec();
+
+        res.json(listings); // Return JSON response
+    } catch (err) {
+        console.error('Error fetching trending listings:', err);
+        res.status(500).json({ error: 'Failed to fetch trending listings' });
+    }
+};
 
 module.exports.renderNewForm = async (req, res) => {
     res.render("listings/new.ejs");
@@ -86,3 +99,4 @@ module.exports.destroyListing = async (req, res) => {
     req.flash("success", "Listing Deleted!");
     res.redirect("/listing");
 }
+
