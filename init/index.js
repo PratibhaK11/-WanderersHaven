@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
-const Listing = require('../models/listing'); // Adjust path as per your project structure
-const initData = require('./data'); // Assuming this is where your data is defined
+const Listing = require('../models/listing'); 
+const initData = require('./data'); 
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/Wanderer";
+const MONGO_URL = process.env.MONGO_URL;
 
 async function main() {
     try {
@@ -36,7 +36,7 @@ async function initDB() {
         // Add owner property to each listing object
         const listingsWithOwner = listings.map((obj) => ({
             ...obj,
-            owner: "66898557e874904c63af58ec" // Assuming this is a valid owner ID
+            owner: "66898557e874904c63af58ec" 
         }));
 
         await Listing.insertMany(listingsWithOwner);
