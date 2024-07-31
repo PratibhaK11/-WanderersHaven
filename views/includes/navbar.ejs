@@ -1,4 +1,5 @@
 <!-- styles -->
+
 <style>
   .search-btn {
     width: 10rem;
@@ -9,7 +10,8 @@
   }
 
   .search-btn:hover {
-    background-color: #ff6347; /* lighter shade of orangered */
+    background-color: #ff6347;
+    /* lighter shade of orangered */
   }
 
   .search-btn i {
@@ -18,19 +20,33 @@
 
   .search-inp {
     border-radius: 25px;
-    padding: 0.5rem 3rem 0.5rem 1rem; /* adjust padding for icon */
+    padding: 0.5rem 3rem 0.5rem 1rem;
+    /* adjust padding for icon */
     font-size: 0.8rem;
     text-align: center;
   }
+  /* Hide the dropdown arrow */
+.dropdown-toggle::after {
+  display: none;
+}
 
-  /* Avatar styles */
-  .avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-right: 8px;
-  }
+/* Style for avatar icon */
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: orangered; 
+  color: whitesmoke; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar:hover {
+  background-color: #ff6f61; 
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3); 
+  cursor: pointer;
+}
 </style>
 
 <!-- navbar -->
@@ -49,8 +65,8 @@
       <!-- Search -->
       <div class="navbar-nav ms-auto">
         <form class="d-flex" role="search" action="/search" method="GET">
-          <input class="form-control me-2 search-inp" type="search" id="searchInput" name="q" placeholder="Search destinations"
-            aria-label="Search by Title or Location">
+          <input class="form-control me-2 search-inp" type="search" id="searchInput" name="q"
+            placeholder="Search destinations" aria-label="Search by Title or Location">
           <button class="btn search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
         </form>
       </div>
@@ -59,30 +75,30 @@
         <% if (!currUser) { %>
           <a class="nav-link" href="/signup"><b>Sign up</b></a>
           <a class="nav-link" href="/login"><b>Log in</b></a>
-        <% } else { %>
-          <!-- User dropdown -->
-          <div class="dropdown">
-            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" id="userDropdown"
-              data-bs-toggle="dropdown" aria-expanded="false">
-              <img src="<%= currUser.avatar || 'https://via.placeholder.com/150' %>" alt="User Avatar" class="avatar img-fluid rounded-circle me-2">
-              <%= currUser.name %>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-              <li><a class="dropdown-item" href="/profile">Profile</a></li>
-              <li><a class="dropdown-item" href="/bookings/history">Booking History</a></li>
-              <li><a class="dropdown-item" href="/help">Help</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="/logout">Sign out</a></li>
-            </ul>
-          </div>
-        <% } %>
+          <% } else { %>
+            <!-- User dropdown -->
+<div class="dropdown">
+  <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" id="userDropdown"
+    data-bs-toggle="dropdown" aria-expanded="false">
+    <!-- Dummy avatar icon -->
+    <i class="fa-solid fa-user avatar"></i>
+  </a>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+    <li><a class="dropdown-item" href="/profile">Profile</a></li>
+    <li><a class="dropdown-item" href="/bookings/history">Booking History</a></li>
+    <li><a class="dropdown-item" href="/help">Help</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="/logout">Sign out</a></li>
+  </ul>
+</div>
+            <% } %>
       </div>
 
     </div>
   </div>
 </nav>
 
-<!-- Bootstrap JavaScript (ensure you have included it in your project) -->
+
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
   integrity="sha384-YuZw5yXb9uPE9zfln76p4v0WcCGub9vE3Qqoa2We1b6k/IwI5D0fIR4nb6N9vBOy" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"
