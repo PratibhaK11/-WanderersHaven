@@ -48,8 +48,7 @@
     
         <div class="mb-3">
             <label for="category" class="form-label">Category</label>
-            <select name="listing[category]" class="form-control" required>
-                <option value="" disabled selected>Select category</option>
+            <select name="listing[category][]" multiple class="form-control">
                 <option value="Castles">Castles</option>
                 <option value="Mountains">Mountains</option>
                 <option value="Iconic Cities">Iconic Cities</option>
@@ -60,9 +59,9 @@
                 <option value="Camping">Camping</option>
                 <option value="Amazing Pools">Amazing Pools</option>
             </select>
-            <div class="invalid-feedback">Please select a category</div>
         </div>
         
+
         <button class="btn btn-dark add-btn mt-3">Add</button>
         <br>
     </form>
