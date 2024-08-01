@@ -1,95 +1,97 @@
 <% layout("/layouts/boilerplate") %>
 
     <body>
-        <style>
-            #filters {
-                display: flex;
-                flex-wrap: wrap;
-                align-items: center;
-            }
-        
-            .filter {
-                text-align: center;
-                margin-right: 2rem;
-                margin-top: 2rem;
-                opacity: 0.8;
-                flex: 1 1 auto; /* Allow filter items to grow and shrink */
-                min-width: 150px; /* Set a minimum width */
-            }
-        
-            .filter:hover {
-                opacity: 1;
-                cursor: pointer;
-            }
-        
-            .filter p {
-                font-size: 0.8rem;
-            }
-        
-            .tax-info {
-                display: none;
-            }
-        
-            .tax-toggle {
-                border: 1px solid black;
-                border-radius: 1rem;
-                height: 3rem;
-                padding: 0.7rem;
-                margin-left: 2rem;
-                display: flex;
-                align-items: center;
-            }
-        
-            @media (max-width: 992px) {
-                .filter {
-                    flex: 1 1 calc(25% - 10px); /* Four filters per row with some space between */
-                    margin-right: 10px;
-                }
-            }
-        
-            @media (max-width: 768px) {
-                #filters {
-                    flex-direction: row;
-                    overflow-x: auto;
-                    flex: 1;
-                }
-        
-                .filter {
-                    flex: 0 0 auto; /* Prevent items from growing or shrinking */
-                    margin: 0.5rem; /* Adjust spacing */
-                    width: auto; /* Allow items to be auto-sized */
-                    font-size: 0.8rem; /* Adjust font size for smaller screens */
-                    text-align: center; /* Ensure text is centered */
-                }
-        
-                .tax-container {
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: flex-end;
-                    margin-top: 1rem;
-                }
-        
-                .tax-toggle {
-                    margin-left: 0;
-                    margin-right: 0;
-                }
-            }
-        
-            .sort-menu {
-                margin-top: 2rem;
-                text-align: center;
-            }
-        
-            .sort-menu label {
-                margin-right: 0.5rem;
-            }
-        
-            .form-select {
-                display: inline-block;
-                width: auto;
-            }
-        </style>
-        
+       <style>
+    #filters {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .filter {
+        text-align: center;
+        margin-right: 2rem;
+        margin-top: 2rem;
+        opacity: 0.8;
+        flex: 1 1 auto; /* Allow filter items to grow and shrink */
+        min-width: 150px; /* Set a minimum width */
+    }
+
+    .filter:hover {
+        opacity: 1;
+        cursor: pointer;
+    }
+
+    .filter p {
+        font-size: 0.8rem;
+    }
+
+    .tax-info {
+        display: none;
+    }
+
+    .tax-toggle {
+        border: 1px solid black;
+        border-radius: 1rem;
+        height: 3rem;
+        padding: 0.7rem;
+        margin-left: 2rem;
+        display: flex;
+        align-items: center;
+    }
+
+    @media (max-width: 992px) {
+        .filter {
+            flex: 1 1 calc(25% - 10px); /* Four filters per row with some space between */
+            margin-right: 10px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        #filters {
+            flex-direction: row;
+            overflow-x: auto;
+            flex: 1;
+        }
+
+        @media (max-width: 768px) {
+    .filter {
+        display: flex;
+        justify-content: space-between;
+        flex: 0 0 auto;
+        margin: 0.5rem;
+        width: auto;
+        font-size: 0.8rem;
+        flex-direction: column;
+
+        .tax-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            margin-top: 1rem;
+        }
+
+        .tax-toggle {
+            margin-left: 0;
+            margin-right: 0;
+        }
+    }
+
+    .sort-menu {
+        margin-top: 2rem;
+        text-align: center;
+    }
+
+    .sort-menu label {
+        margin-right: 0.5rem;
+    }
+
+    .form-select {
+        display: inline-block;
+        width: auto;
+    }
+</style>
+
         <div class="tax-container">
             <div id="filters">
                 <div class="filter" id="trendingFilter">
