@@ -25,17 +25,6 @@ router.get("/logout", (req, res) => {
         res.redirect("/listing"); // Redirect to a suitable page after logout
     });
 });
-// Google OAuth routes
-router.get('/auth/google',
-    passport.authenticate('google', { scope: ['profile', 'email'] })
-);
-
-router.get('/auth/google/callback',
-    passport.authenticate('google', { failureRedirect: '/login', failureFlash: true }),
-    (req, res) => {
-        res.redirect('/listing');
-    }
-);
 
 // GitHub OAuth routes
 router.get('/auth/github',

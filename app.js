@@ -66,44 +66,25 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// Configure Google OAuth 2.0 Strategy
-passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "/auth/google/callback"
-},
-async (accessToken, refreshToken, profile, done) => {
-    try {
-        let user = await User.findOne({ googleId: profile.id });
-        if (!user) {
-            user = await User.create({
-                googleId: profile.id,
-                email: profile.emails[0].value,
-                username: profile.displayName
-            });
-        }
-        return done(null, user);
-    } catch (err) {
-        return done(err);
-    }
-}));
-
-
 
 // Configure GitHub OAuth 2.0 Strategy
 passport.use(new GitHubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: "https://wanderershaven.onrender.com/auth/github/callback"
+    callbackURL: process.env.GITHUB_CALLBACK_URL,
+    scope: ['user:email']
 },
 async (accessToken, refreshToken, profile, done) => {
     try {
+        // Log the profile object to debug
+        console.log("GitHub profile:", profile);
+
         let user = await User.findOne({ githubId: profile.id });
         if (!user) {
             user = await User.create({
                 githubId: profile.id,
                 username: profile.username,
-                email: profile.emails[0].value
+                email: (profile.emails && profile.emails.length > 0) ? profile.emails[0].value : 'no-email@example.com' // Use default email if not present
             });
         }
         return done(null, user);
@@ -121,6 +102,9 @@ app.use((req, res, next) => {
 });
 
 // Routes
+app.get("/", (req, res) => {
+    res.redirect("/listing");
+});
 app.use("/listing", listingRouter);
 app.use("/listing/:id/reviews", reviewsRouter);
 app.use('/search', searchRouter);

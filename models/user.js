@@ -6,20 +6,17 @@ const userSchema = new Schema({
     email: {
         type: String,
         required: true,
-        unique: true
+        sparse: true
     },
     username: {
         type: String,
         required: true,
         unique: true
     },
-    googleId: {
-        type: String,
-        unique: true
-    },
+  
     githubId: {
         type: String,
-        unique: true
+        sparse: true
     }
 });
 
