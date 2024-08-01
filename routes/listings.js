@@ -20,7 +20,7 @@ router.route("/")
 //new Route
 router.get("/new", isLoggedIn, wrapAsync(listingController.renderNewForm));
 
- router.get("/trending", isLoggedIn, wrapAsync(listingController.showTrendingListings));
+ router.get("/trending", wrapAsync(listingController.showTrendingListings));
 
 
 
