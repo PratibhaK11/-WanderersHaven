@@ -5,11 +5,10 @@ const Review = require('../models/reviews');
 // Render profile page
 exports.renderProfile = async (req, res) => {
   try {
-    const userId = req.user._id; // Assuming authenticated user ID
+    const userId = req.user._id; 
     const user = await User.findById(userId);
-    // Populate 'listing' and 'guest' fields in the Booking model
     const bookings = await Booking.find({ guest: userId }).populate('listing').limit(5);
-    const reviews = await Review.find({ userId }).limit(5); // Limit to 5 recent reviews
+    const reviews = await Review.find({ userId }).limit(5);
 
     if (!user) {
       req.flash('error', 'User not found.');
@@ -26,19 +25,21 @@ exports.renderProfile = async (req, res) => {
 // Update profile
 exports.updateProfile = async (req, res) => {
   try {
-    const userId = req.user._id; // Assuming authenticated user ID
-    const { email } = req.body; // Update other fields as needed
+    const userId = req.user._id;
+    const { email } = req.body;
 
+    console.log(`Updating profile for user: ${userId} with email: ${email}`);
     await User.findByIdAndUpdate(userId, { email });
+
     req.flash('success', 'Profile updated successfully.');
     res.redirect('/profile');
   } catch (err) {
-    console.error(err);
+    console.error(`Failed to update profile: ${err.message}`);
+    console.error(err.stack);
     req.flash('error', 'Failed to update profile.');
     res.redirect('/profile');
   }
 };
-
 // Render full booking history
 exports.getBookingHistory = async (req, res) => {
   try {
@@ -64,5 +65,25 @@ exports.getReviews = async (req, res) => {
     console.error(err);
     req.flash('error', 'Failed to load reviews.');
     res.redirect('/profile');
+  }
+};
+
+// Delete booking
+exports.deleteBooking = async (req, res) => {
+  try {
+    const bookingId = req.params.bookingId;
+    console.log(`Attempting to delete booking: ${bookingId}`);
+
+    // Delete the booking
+    await Booking.findByIdAndDelete(bookingId);
+
+    console.log(`Booking deleted successfully: ${bookingId}`);
+    req.flash('success', 'Booking deleted successfully.');
+    res.redirect('/profile/bookings');
+  } catch (err) {
+    console.error(`Failed to delete booking: ${err.message}`);
+    console.error(err.stack);
+    req.flash('error', 'Failed to delete booking.');
+    res.redirect('/profile/bookings');
   }
 };

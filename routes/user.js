@@ -37,5 +37,18 @@ router.get('/auth/google/callback',
     }
 );
 
+// GitHub OAuth routes
+router.get('/auth/github',
+    passport.authenticate('github', { scope: ['user:email'] })
+);
+
+router.get('/auth/github/callback',
+    passport.authenticate('github', { failureRedirect: '/login', failureFlash: true }),
+    (req, res) => {
+        res.redirect('/listing');
+    }
+);
+
+
 
 module.exports = router;

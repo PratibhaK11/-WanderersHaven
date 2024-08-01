@@ -6,19 +6,24 @@ const userSchema = new Schema({
     email: {
         type: String,
         required: true,
-        unique: true 
+        unique: true
     },
     username: {
         type: String,
         required: true,
-        unique: true 
+        unique: true
     },
     googleId: {
+        type: String,
+        unique: true
+    },
+    githubId: {
         type: String,
         unique: true
     }
 });
 
+// Add passport-local-mongoose plugin
 userSchema.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model('User', userSchema);

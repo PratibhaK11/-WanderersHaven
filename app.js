@@ -14,6 +14,7 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const GitHubStrategy = require('passport-github2').Strategy;
 const User = require("./models/user.js");
 const profileRoutes = require('./routes/profile');
 const listingRouter = require("./routes/listings.js");
@@ -79,6 +80,30 @@ async (accessToken, refreshToken, profile, done) => {
                 googleId: profile.id,
                 email: profile.emails[0].value,
                 username: profile.displayName
+            });
+        }
+        return done(null, user);
+    } catch (err) {
+        return done(err);
+    }
+}));
+
+
+
+// Configure GitHub OAuth 2.0 Strategy
+passport.use(new GitHubStrategy({
+    clientID: process.env.GITHUB_CLIENT_ID,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    callbackURL: "/auth/github/callback"
+},
+async (accessToken, refreshToken, profile, done) => {
+    try {
+        let user = await User.findOne({ githubId: profile.id });
+        if (!user) {
+            user = await User.create({
+                githubId: profile.id,
+                username: profile.username,
+                email: profile.emails[0].value
             });
         }
         return done(null, user);
