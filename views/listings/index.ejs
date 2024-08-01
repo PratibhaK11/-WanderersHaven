@@ -1,188 +1,183 @@
 <% layout("/layouts/boilerplate") %>
 
-    <body>
-       <style>
-    #filters {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-    }
-
-    .filter {
-        text-align: center;
-        margin-right: 2rem;
-        margin-top: 2rem;
-        opacity: 0.8;
-        flex: 1 1 auto; /* Allow filter items to grow and shrink */
-        min-width: 150px; /* Set a minimum width */
-    }
-
-    .filter:hover {
-        opacity: 1;
-        cursor: pointer;
-    }
-
-    .filter p {
-        font-size: 0.8rem;
-    }
-
-    .tax-info {
-        display: none;
-    }
-
-    .tax-toggle {
-        border: 1px solid black;
-        border-radius: 1rem;
-        height: 3rem;
-        padding: 0.7rem;
-        margin-left: 2rem;
-        display: flex;
-        align-items: center;
-    }
-
-    @media (max-width: 992px) {
-        .filter {
-            flex: 1 1 calc(25% - 10px); /* Four filters per row with some space between */
-            margin-right: 10px;
-        }
-    }
-
-    @media (max-width: 768px) {
+<body>
+    <style>
         #filters {
-            flex-direction: row;
-            overflow-x: auto;
-            flex: 1;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
         }
 
-        @media (max-width: 768px) {
-    .filter {
-        display: flex;
-        justify-content: space-between;
-        flex: 0 0 auto;
-        margin: 0.5rem;
-        width: auto;
-        font-size: 0.8rem;
-        flex-direction: column;
+        .filter {
+            text-align: center;
+            margin-right: 2rem;
+            margin-top: 2rem;
+            opacity: 0.8;
+        }
 
-        .tax-container {
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-end;
-            margin-top: 1rem;
+        .filter:hover {
+            opacity: 1;
+            cursor: pointer;
+        }
+
+        .filter p {
+            font-size: 0.8rem;
+        }
+
+        .tax-info {
+            display: none;
         }
 
         .tax-toggle {
-            margin-left: 0;
-            margin-right: 0;
+            border: 1px solid black;
+            border-radius: 1rem;
+            height: 3rem;
+            padding: 0.7rem;
+            margin-left: 2rem;
+            display: flex;
+            align-items: center;
         }
-    }
 
-    .sort-menu {
-        margin-top: 2rem;
-        text-align: center;
-    }
+        @media (max-width: 992px) {
+            .filter {
+                flex: 1 1 calc(15% - 10px);
+                margin-right: 10px;
+            }
+        }
 
-    .sort-menu label {
-        margin-right: 0.5rem;
-    }
+        @media (max-width: 768px) {
+            #filters {
+                display: flex;
+                justify-content: space-between;
+                flex-direction: row-reverse;
+                overflow-x: auto;
+                flex: 1;
+            }
 
-    .form-select {
-        display: inline-block;
-        width: auto;
-    }
-</style>
+            .filter {
+                
+                margin: 0.5rem;
+                width: auto;
+                font-size: 0.8rem;
+               
+            }
 
-        <div class="tax-container">
-            <div id="filters">
-                <div class="filter" id="trendingFilter">
-                    <div><i class="fa-solid fa-fire-flame-curved"></i></div>
-                    <p>Trending</p>
-                </div>
+            .tax-container {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+                margin-top: 1rem;
+            }
 
-                <div class="filter">
-                    <div><i class="fa-solid fa-bed"></i></div>
-                    <p>Room</p>
-                </div>
+            .tax-toggle {
+                margin-left: 0;
+                margin-right: 0;
+            }
+        }
 
-                <div class="filter">
-                    <div><i class="fa-solid fa-mountain-city"></i></div>
-                    <p>Iconic Cities</p>
-                </div>
+        .sort-menu {
+            margin-top: 2rem;
+            text-align: center;
+        }
 
-                <div class="filter">
-                    <div><i class="fa-solid fa-mountain"></i></div>
-                    <p>Mountains</p>
-                </div>
+        .sort-menu label {
+            margin-right: 0.5rem;
+        }
 
-                <div class="filter">
-                    <div><i class="fa-brands fa-fort-awesome"></i></div>
-                    <p>Castles</p>
-                </div>
+        .form-select {
+            display: inline-block;
+            width: auto;
+        }
+    </style>
 
-                <div class="filter">
-                    <div><i class="fa-solid fa-person-swimming"></i></div>
-                    <p>Amazing Pools</p>
-                </div>
+    <div class="tax-container">
+        <div id="filters">
+            <div class="filter" id="trendingFilter">
+                <div><i class="fa-solid fa-fire-flame-curved"></i></div>
+                <p>Trending</p>
+            </div>
 
-                <div class="filter">
-                    <div><i class="fa-solid fa-campground"></i></div>
-                    <p>Camping</p>
-                </div>
+            <div class="filter">
+                <div><i class="fa-solid fa-bed"></i></div>
+                <p>Room</p>
+            </div>
 
-                <div class="filter">
-                    <div><i class="fa-solid fa-cow"></i></div>
-                    <p>Farms</p>
-                </div>
+            <div class="filter">
+                <div><i class="fa-solid fa-mountain-city"></i></div>
+                <p>Iconic Cities</p>
+            </div>
 
-                <div class="filter">
-                    <div><i class="fa-regular fa-snowflake"></i></div>
-                    <p>Arctic</p>
-                </div>
+            <div class="filter">
+                <div><i class="fa-solid fa-mountain"></i></div>
+                <p>Mountains</p>
+            </div>
 
-                <div class="filter">
-                    <div><i class="fa-solid fa-ship"></i></div>
-                    <p>Boats</p>
-                </div>
+            <div class="filter">
+                <div><i class="fa-brands fa-fort-awesome"></i></div>
+                <p>Castles</p>
+            </div>
 
-                <div class="tax-toggle">
-                    <div class="form-check-reverse form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                        <label class="form-check-label" for="flexSwitchCheckDefault">Total after taxes</label>
-                    </div>
+            <div class="filter">
+                <div><i class="fa-solid fa-person-swimming"></i></div>
+                <p>Amazing Pools</p>
+            </div>
+
+            <div class="filter">
+                <div><i class="fa-solid fa-campground"></i></div>
+                <p>Camping</p>
+            </div>
+
+            <div class="filter">
+                <div><i class="fa-solid fa-cow"></i></div>
+                <p>Farms</p>
+            </div>
+
+            <div class="filter">
+                <div><i class="fa-regular fa-snowflake"></i></div>
+                <p>Arctic</p>
+            </div>
+
+            <div class="filter">
+                <div><i class="fa-solid fa-ship"></i></div>
+                <p>Boats</p>
+            </div>
+
+            <div class="tax-toggle">
+                <div class="form-check-reverse form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                    <label class="form-check-label" for="flexSwitchCheckDefault">Total after taxes</label>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
-            <% for(let listing of allListing){ %>
-                <a href="/listing/<%=listing._id%>" class="listing-link">
-                    <div class="card col listing-card">
-                        <img src="<%=listing.image.url%>" class="card-img-top" alt="listing_image"
-                            style="height: 20rem">
-                        <div class="card-img-overlay"></div>
-                        <div class="card-body">
-                            <p class="card-text">
-                                <b>
-                                    <%= listing.title %>
-                                </b> <br />
-                                &#x20B9; <%= listing.price.toLocaleString("en-IN") %> / Night
-                                    <i class="tax-info"> &nbsp; &nbsp; +18% GST</i>
-                            </p>
-                        </div>
+    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+        <% for(let listing of allListing){ %>
+            <a href="/listing/<%=listing._id%>" class="listing-link">
+                <div class="card col listing-card">
+                    <img src="<%=listing.image.url%>" class="card-img-top" alt="listing_image" style="height: 20rem">
+                    <div class="card-img-overlay"></div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            <b><%= listing.title %></b>  <br />
+                            &#x20B9; <%= listing.price.toLocaleString("en-IN") %> / Night
+                            <i class="tax-info"> &nbsp; &nbsp; +18% GST</i>
+                        </p>
                     </div>
-                </a>
-                <%}%>
-        </div>
+                </div>
+            </a>
+        <%}%>
+    </div>
 
-        <script>
-            document.getElementById('trendingFilter').addEventListener('click', () => {
-                fetch('listing/trending')
-                    .then(response => response.json())
-                    .then(data => {
-                        const listingsContainer = document.querySelector('.row');
-                        listingsContainer.innerHTML = ''; // Clear existing listings
-                        data.forEach(listing => {
-                            const card = `
+    <script>
+        document.getElementById('trendingFilter').addEventListener('click', () => {
+            fetch('listing/trending')
+                .then(response => response.json())
+                .then(data => {
+                    const listingsContainer = document.querySelector('.row');
+                    listingsContainer.innerHTML = ''; // Clear existing listings
+                    data.forEach(listing => {
+                        const card = `
                             <a href="/listing/${listing._id}" class="listing-link">
                                 <div class="card col listing-card">
                                     <img src="${listing.image.url}" class="card-img-top" alt="listing_image" style="height: 20rem">
@@ -197,40 +192,40 @@
                                 </div>
                             </a>
                         `;
-                            listingsContainer.innerHTML += card;
-                        });
-                    })
-                    .catch(error => console.error('Error fetching trending listings:', error));
-            });
+                        listingsContainer.innerHTML += card;
+                    });
+                })
+                .catch(error => console.error('Error fetching trending listings:', error));
+        });
 
-            let taxSwitch = document.getElementById("flexSwitchCheckDefault");
-            taxSwitch.addEventListener("click", () => {
-                let taxinfo = document.getElementsByClassName("tax-info");
-                for (info of taxinfo) {
-                    info.style.display = (info.style.display !== "inline") ? "inline" : "none";
-                }
-            });
+        let taxSwitch = document.getElementById("flexSwitchCheckDefault");
+        taxSwitch.addEventListener("click", () => {
+            let taxinfo = document.getElementsByClassName("tax-info");
+            for (info of taxinfo) {
+                info.style.display = (info.style.display !== "inline") ? "inline" : "none";
+            }
+        });
 
-            document.getElementById('sortSelect').addEventListener('change', function () {
-                const sortBy = this.value;
-                const query = new URLSearchParams(window.location.search);
-                const searchQuery = query.get('q') || '';
+        document.getElementById('sortSelect').addEventListener('change', function() {
+            const sortBy = this.value;
+            const query = new URLSearchParams(window.location.search);
+            const searchQuery = query.get('q') || '';
 
-                fetch(`/listing/search?q=${encodeURIComponent(searchQuery)}&sort=${encodeURIComponent(sortBy)}`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        const listingsContainer = document.querySelector('.row');
-                        listingsContainer.innerHTML = ''; // Clear existing listings
-                        if (data.length === 0) {
-                            listingsContainer.innerHTML = '<p>No listings found</p>';
-                        } else {
-                            data.forEach(listing => {
-                                const card = `
+            fetch(`/listing/search?q=${encodeURIComponent(searchQuery)}&sort=${encodeURIComponent(sortBy)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const listingsContainer = document.querySelector('.row');
+                    listingsContainer.innerHTML = ''; // Clear existing listings
+                    if (data.length === 0) {
+                        listingsContainer.innerHTML = '<p>No listings found</p>';
+                    } else {
+                        data.forEach(listing => {
+                            const card = `
                                 <a href="/listing/${listing._id}" class="listing-link">
                                     <div class="card col listing-card">
                                         <img src="${listing.image.url}" class="card-img-top" alt="listing_image" style="height: 20rem">
@@ -245,15 +240,15 @@
                                     </div>
                                 </a>
                             `;
-                                listingsContainer.innerHTML += card;
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error fetching sorted listings:', error);
-                        const listingsContainer = document.querySelector('.row');
-                        listingsContainer.innerHTML = '<p>Failed to load listings. Please try again later.</p>';
-                    });
-            });
-        </script>
-    </body>
+                            listingsContainer.innerHTML += card;
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching sorted listings:', error);
+                    const listingsContainer = document.querySelector('.row');
+                    listingsContainer.innerHTML = '<p>Failed to load listings. Please try again later.</p>';
+                });
+        });
+    </script>
+</body>
