@@ -44,6 +44,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const Review = require("./reviews.js");
+const User = require("./user.js");
 
 const listingSchema = new Schema({
   title: {
@@ -66,7 +67,8 @@ const listingSchema = new Schema({
   ],
   owner: {
     type: Schema.Types.ObjectId,
-    ref: "User"
+    ref: 'User',
+    required: true
   },
   geometry: {
     type: {
@@ -84,6 +86,12 @@ const listingSchema = new Schema({
     default: 0
   },
  
+  category: {
+    type: String,
+    enum: ['Castles', 'Mountains', 'Iconic Cities', 'Room', 'Boats', 'Arctic', 'Farms', 'Camping', 'Amazing Pools'],
+    required: true
+  }
+
 });
 const Listing = mongoose.model("Listing", listingSchema);
 module.exports = Listing;
