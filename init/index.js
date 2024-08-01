@@ -3,8 +3,9 @@ const mongoose = require('mongoose');
 const Listing = require('../models/listing'); 
 const initData = require('./data'); 
 
-const MONGO_URL = process.env.MONGO_URL;
+const MONGO_URL="mongodb+srv:";
 
+const User = require('../models/user'); 
 async function main() {
     try {
         await mongoose.connect(MONGO_URL);
@@ -18,10 +19,23 @@ async function main() {
         console.log("Disconnected from DB");
     }
 }
-
 async function initDB() {
     try {
         await Listing.deleteMany({});
+        let user;
+        // Find an existing user or create a new one
+        user = await User.findOne(); 
+
+        if (!user) {
+            // If no user found, create one
+            user = new User({
+                username: 'testUser',
+                email: 'test@example.com',
+                password: 'password' 
+            });
+            await user.setPassword('password'); // Set and hash password
+            await user.save();
+        }
 
         const listings = initData.data.map((listing) => {
             // Ensure listing has image object with url property
@@ -37,15 +51,13 @@ async function initDB() {
         // Add owner property to each listing object
         const listingsWithOwner = listings.map((obj) => ({
             ...obj,
-            owner: "66898557e874904c63af58ec" 
+            owner: user._id // Use the user's ObjectId
         }));
-
+        
         await Listing.insertMany(listingsWithOwner);
         console.log("Data was initialized successfully.");
     } catch (error) {
         console.error("Error initializing data:", error);
     }
 }
-
 main();
-
