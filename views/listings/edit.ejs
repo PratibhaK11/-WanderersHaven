@@ -43,29 +43,13 @@
             </div>
         </div>
         
+        
+        
         <div class="mb-3">
             <label for="location" class="form-label col-1">Location</label>
             <input name="listing[location]" value="<%=listing.location%>" type="text" class="form-control" required>
             <div class="invalid-feedback">Location should be valid</div>
         </div>
-
-        <div class="mb-3">
-            <label for="category" class="form-label">Category</label>
-            <select name="listing[category][]" multiple class="form-control">
-                <option value="Castles" <%= listing.category.includes('Castles') ? 'selected' : '' %>>Castles</option>
-                <option value="Mountains" <%= listing.category.includes('Mountains') ? 'selected' : '' %>>Mountains</option>
-                <option value="Iconic Cities" <%= listing.category.includes('Iconic Cities') ? 'selected' : '' %>>Iconic Cities</option>
-                <option value="Room" <%= listing.category.includes('Room') ? 'selected' : '' %>>Room</option>
-                <option value="Boats" <%= listing.category.includes('Boats') ? 'selected' : '' %>>Boats</option>
-                <option value="Arctic" <%= listing.category.includes('Arctic') ? 'selected' : '' %>>Arctic</option>
-                <option value="Farms" <%= listing.category.includes('Farms') ? 'selected' : '' %>>Farms</option>
-                <option value="Camping" <%= listing.category.includes('Camping') ? 'selected' : '' %>>Camping</option>
-                <option value="Amazing Pools" <%= listing.category.includes('Amazing Pools') ? 'selected' : '' %>>Amazing Pools</option>
-            </select>
-        </div>
-        
-        
-
         <button class="btn btn-dark edit-btn mt-3">Edit</button>
         <br>
     </form>
