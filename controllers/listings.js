@@ -45,6 +45,9 @@ module.exports.showListing = async (req, res) => {
 };
 
 module.exports.createListing = async (req, res) => {
+    console.log('Request Body:', req.body); // Log the entire request body
+    console.log('Category:', req.body.listing.category); // Log the category field
+
     try {
         // Geocode the location
         let response = await geocodingClient.forwardGeocode({
