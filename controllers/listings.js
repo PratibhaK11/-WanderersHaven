@@ -40,7 +40,8 @@ module.exports.showListing = async (req, res) => {
         return res.redirect("/listing");
     }
     console.log("Populated Listing:", listing);
-    res.render("listings/show.ejs", { listing, mapToken }); // render listing with map
+    const mapboxToken = process.env.MAP_TOKEN;
+    res.render("listings/show.ejs", { listing, mapboxToken }); // render listing with map
 };
 
 
