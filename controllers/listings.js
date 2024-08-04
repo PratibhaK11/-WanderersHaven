@@ -45,29 +45,37 @@ module.exports.showListing = async (req, res) => {
 };
 
 
+// Create a new listing
+module.exports.createListing = async (req, res, next) => {
+    try {
+        const { title, description, price, location, country, category } = req.body.listing;
+        const image = req.file ? { url: req.file.path, filename: req.file.filename } : undefined;
+        
+        const newListing = new Listing({
+            title,
+            description,
+            price,
+            location,
+            country,
+            category,  // category is an array of strings
+            image,
+            owner: req.user._id, 
+            geometry: {
+                type: 'Point',
+                coordinates: [/* Longitude, Latitude */]
+            }
+        });
 
-module.exports.createListing = async (req, res) => {
-    let response = await geocodingClient.forwardGeocode({
-        query: req.body.listing.location,
-        limit: 1,
-      })
-        .send()
-    
-    // Extracting file information from req.file
-    const { path: url, filename } = req.file;
-
-    const newListing = new Listing(req.body.listing);
-    newListing.owner = req.user._id;
-    newListing.image = { url, filename };
-    newListing.image = { url, filename };
-    
-    newListing.geometry = response.body.features[0].geometry;
-
-    let savedListing = await newListing.save();
-    console.log(savedListing);
-    req.flash("success", "New Listing Created!");
-    res.redirect("/listing");
+        await newListing.save();
+        req.flash('success', 'Listing created successfully!');
+        res.redirect('/listings');
+    } catch (error) {
+        console.error(error);
+        req.flash('error', 'Failed to create listing');
+        res.redirect('/listing/new');
+    }
 };
+
 
 
 module.exports.renderEditForm = async (req, res) => {
@@ -83,17 +91,34 @@ module.exports.renderEditForm = async (req, res) => {
 
 };
 
-module.exports.updateListing = async (req, res) => {
-    let { id } = req.params;
-    let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
-    if (typeof req.file !== "undefined") {
-        // Extracting file information from req.file
-        let { path: url, filename } = req.file;
-        listing.image = { url, filename };
-        await listing.save();
+// Update a listing
+module.exports.updateListing = async (req, res, next) => {
+    try {
+        const { title, description, price, location, country, category } = req.body.listing;
+        const image = req.file ? { url: req.file.path, filename: req.file.filename } : undefined;
+
+        const updatedListing = await Listing.findByIdAndUpdate(
+            req.params.id,
+            {
+                title,
+                description,
+                price,
+                location,
+                country,
+                category, 
+                image: image ? image : undefined,
+                
+            },
+            { new: true }
+        );
+
+        req.flash('success', 'Listing updated successfully!');
+        res.redirect(`/listings/${updatedListing._id}`);
+    } catch (error) {
+        console.error(error);
+        req.flash('error', 'Failed to update listing');
+        res.redirect(`/listing/${req.params.id}/edit`);
     }
-    req.flash("success", "Listing Updated!");
-    res.redirect(`/listing/${id}`);
 };
 
 module.exports.destroyListing = async (req, res) => {
