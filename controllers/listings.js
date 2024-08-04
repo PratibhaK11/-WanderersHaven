@@ -37,11 +37,12 @@ module.exports.showListing = async (req, res) => {
         .populate("owner");
     if (!listing) {
         req.flash("error", "Listing you requested for does not exist!");
-        res.redirect("/listing");
+        return res.redirect("/listing");
     }
     console.log("Populated Listing:", listing);
-    res.render("listings/show.ejs", { listing });
+    res.render("listings/show.ejs", { listing, mapToken }); // render listing with map
 };
+
 
 
 module.exports.createListing = async (req, res) => {
