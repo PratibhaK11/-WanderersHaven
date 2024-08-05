@@ -77,7 +77,7 @@ module.exports.createListing = async (req, res) => {
 
         await newListing.save();
         req.flash('success', 'Listing created successfully!');
-        res.redirect('/listings');
+        res.redirect('/listing');
     } catch (error) {
         console.error('Error creating listing:', error);
         req.flash('error', 'Failed to create listing');
