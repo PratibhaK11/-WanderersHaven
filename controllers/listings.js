@@ -60,7 +60,7 @@ module.exports.createListing = async (req, res) => {
     try {
         const { title, description, price, location, country, category } = req.body.listing;
         const image = req.file ? { url: req.file.path, filename: req.file.filename } : undefined;
-
+        console.log("Received category:", category); //
         // Ensure category is an array
         const categories = Array.isArray(category) ? category : [];
 
@@ -111,7 +111,7 @@ module.exports.updateListing = async (req, res) => {
     try {
         const { title, description, price, location, country, category } = req.body.listing;
         const image = req.file ? { url: req.file.path, filename: req.file.filename } : undefined;
-
+        console.log("Received category:", category); //
         const updatedListing = await Listing.findByIdAndUpdate(
             req.params.id,
             {
