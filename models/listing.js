@@ -43,10 +43,12 @@ const listingSchema = new Schema({
     default: 0
   },
   category: {
-    type: String,
+    type: [String],
     enum: ['Castles', 'Mountains', 'Iconic Cities', 'Room', 'Boats', 'Arctic', 'Farms', 'Camping', 'Amazing Pools'],
-    required: true
-  }
+    required: true,
+    default: [] // Default to an empty array if not provided
+}
+
 });
 
 // Post hook to delete related reviews when a listing is deleted

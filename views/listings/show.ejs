@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -11,7 +9,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
@@ -19,6 +16,39 @@
     <link rel="stylesheet" href="/css/rating.css">
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.js"></script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .show-card {
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .show-img {
+            border-radius: 15px 15px 0 0;
+            object-fit: cover;
+            height: 250px;
+        }
+        .btns {
+            margin-top: 20px;
+        }
+        .btns .btn {
+            margin: 0 5px;
+        }
+        .card {
+            border-radius: 15px;
+        }
+        .rating-form {
+            margin-top: 20px;
+        }
+        #map {
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 
 <body>
@@ -27,130 +57,114 @@
         <%- include("../includes/flash.ejs") %>
         
         <!-- Listing Details -->
-        <div class="row mt-3">
-            <div class="col-8 offset-3">
-                <h3>
-                    <%= listing.title %>
-                </h3>
-            </div>
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+                <h3 class="text-center mb-4"><%= listing.title %></h3>
 
-            <div class="card col-6 offset-3 show-card listing-card">
-                <img src="<%= listing.image.url %>" class="card-img-top show-img" alt="listing_image">
-                <div class="card-body">
-                    <% if (listing.owner && listing.owner.username) { %>
-                        <p class="card-text">Owned by <i><%= listing.owner.username %></i></p>
-                    <% } else { %>
-                        <p class="card-text">Owner information not available</p>
-                    <% } %>
-
-                    <p>
-                        <%= listing.description %>
-                    </p>
-                    <p>&#x20B9; <%= listing.price.toLocaleString("en-IN") %></p>
-                    <p>
-                        <%= listing.location %>
-                    </p>
-                    <p>
-                        <%= listing.country %>
-                    </p>
+                <div class="card show-card">
+                    <img src="<%= listing.image.url %>" class="card-img-top show-img" alt="listing_image">
+                    <div class="card-body">
+                        <% if (listing.owner && listing.owner.username) { %>
+                            <p class="card-text">Owned by <i><%= listing.owner.username %></i></p>
+                        <% } else { %>
+                            <p class="card-text">Owner information not available</p>
+                        <% } %>
+                        <p class="card-text"><%= listing.description %></p>
+                        <p class="card-text"><strong>&#x20B9; <%= listing.price.toLocaleString("en-IN") %></strong> per night</p>
+                        <p class="card-text"><strong>Location:</strong> <%= listing.location %></p>
+                        <p class="card-text"><strong>Country:</strong> <%= listing.country %></p>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <% if (currUser && listing.owner && currUser._id.equals(listing.owner._id)) { %>
-            <div class="btns">
-                <a href="/listing/<%= listing._id %>/edit" class="btn btn-dark col-1 offset-3 edit-btn">Edit</a>
-
-                <form method="POST" action="/listing/<%= listing._id %>?_method=DELETE">
-                    <button class="btn btn-dark offset-5">Delete</button>
-                </form>
-            </div>
-        <% } %>
-
-        <!-- Booking -->
-        <div class="card col-6 offset-3" style="width: 20rem; border-radius: 2rem; box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);">
-            <div class="col-8 offset-3 mt-3 mb-3">
-                <form action="">
-                    <h4><b>&#x20B9; <%= listing.price.toLocaleString("en-IN") %></b> per guest</h4>
-                    <a href="/bookings?listingId=<%= listing._id %>" class="btn btn-outline-dark booking-btn" style="background-color: orangered; border: none;">Book Now</a>
-                </form>
-            </div>
-        </div>
-
-        <div class="col-8 offset-3 mb-3">
-            <% if (currUser) { %>
-                <h4>Leave a Review</h4>
-                <hr>
-                <form action="/listing/<%= listing._id %>/reviews" method="POST" novalidate class="needs-validation">
-                    <div class="mb-3 mt-3">
-                        <label for="rating" class="form-label">Rating</label>
-                        <fieldset class="starability-heartbeat">
-                            <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
-                            <input type="radio" id="first-rate1" name="review[rating]" value="1" />
-                            <label for="first-rate1" title="Terrible">1 star</label>
-                            <input type="radio" id="first-rate2" name="review[rating]" value="2" />
-                            <label for="first-rate2" title="Not good">2 stars</label>
-                            <input type="radio" id="first-rate3" name="review[rating]" value="3" />
-                            <label for="first-rate3" title="Average">3 stars</label>
-                            <input type="radio" id="first-rate4" name="review[rating]" value="4" />
-                            <label for="first-rate4" title="Very good">4 stars</label>
-                            <input type="radio" id="first-rate5" name="review[rating]" value="5" />
-                            <label for="first-rate5" title="Amazing">5 stars</label>
-                        </fieldset>
+                <% if (currUser && listing.owner && currUser._id.equals(listing.owner._id)) { %>
+                    <div class="btns text-center">
+                        <a href="/listing/<%= listing._id %>/edit" class="btn btn-dark">Edit</a>
+                        <form method="POST" action="/listing/<%= listing._id %>?_method=DELETE" class="d-inline">
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
                     </div>
-                    <div class="mb-3 mt-3">
-                        <label for="comment">Comments</label>
-                        <textarea name="review[comment]" id="comment" col="30" rows="5" class="form-control" required></textarea>
-                        <div class="invalid-feedback">Please add some comments for review</div>
-                    </div>
-                    <button class="btn btn-outline-dark">Submit</button>
-                </form>
-            <% } %>
+                <% } %>
 
-            <hr>
-            <% if (listing.reviews.length > 0) { %>
-                <div class="row">
-                    <p><b>All Reviews</b></p>
-                    <% for (let review of listing.reviews) { %>
-                        <div class="card col-5 ms-3 mb-3">
-                            <div class="card-body">
-                                <h5 class="card-title">@<%= review.author.username %></h5>
-                                <p class="starability-result card-text" data-rating="<%= review.rating %>"></p>
-                                <p class="card-text">
-                                    <%= review.comment %>
-                                </p>
+                <!-- Booking -->
+                <div class="card mt-4 text-center" style="border-radius: 15px;">
+                    <div class="card-body">
+                        <h4><b>&#x20B9; <%= listing.price.toLocaleString("en-IN") %></b> per guest</h4>
+                        <a href="/bookings?listingId=<%= listing._id %>" class="btn btn-outline-dark" style="background-color: orangered; border: none;">Book Now</a>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <% if (currUser) { %>
+                        <h4>Leave a Review</h4>
+                        <form action="/listing/<%= listing._id %>/reviews" method="POST" novalidate class="needs-validation rating-form">
+                            <div class="mb-3">
+                                <label for="rating" class="form-label">Rating</label>
+                                <fieldset class="starability-heartbeat">
+                                    <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+                                    <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                                    <label for="first-rate1" title="Terrible">1 star</label>
+                                    <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                                    <label for="first-rate2" title="Not good">2 stars</label>
+                                    <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                                    <label for="first-rate3" title="Average">3 stars</label>
+                                    <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                                    <label for="first-rate4" title="Very good">4 stars</label>
+                                    <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                                    <label for="first-rate5" title="Amazing">5 stars</label>
+                                </fieldset>
                             </div>
-                            <form class="mb-3" method="POST" action="/listing/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
-                                <br>
-                                <button class="btn btn-sm btn-dark">Delete</button>
-                            </form>
-                        </div>
+                            <div class="mb-3">
+                                <label for="comment">Comments</label>
+                                <textarea name="review[comment]" id="comment" rows="5" class="form-control" required></textarea>
+                                <div class="invalid-feedback">Please add some comments for the review</div>
+                            </div>
+                            <button class="btn btn-outline-dark">Submit</button>
+                        </form>
+                    <% } %>
+
+                    <hr>
+                    <% if (listing.reviews.length > 0) { %>
+                        <h4>All Reviews</h4>
+                        <% for (let review of listing.reviews) { %>
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">@<%= review.author.username %></h5>
+                                    <p class="starability-result" data-rating="<%= review.rating %>"></p>
+                                    <p class="card-text"><%= review.comment %></p>
+                                    <% if (currUser && currUser._id.equals(review.author._id)) { %>
+                                        <form method="POST" action="/listing/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" class="d-inline">
+                                            <button class="btn btn-sm btn-danger">Delete</button>
+                                        </form>
+                                    <% } %>
+                                </div>
+                            </div>
+                        <% } %>
                     <% } %>
                 </div>
-            <% } %>
-        </div>
 
-        <!-- Map -->
-        <div class="col-6 offset-3 mb-3">
-            <h3>Where you'll be</h3>
-            <div id="map" style="width: 100%; height: 400px;"></div>
+                <!-- Map -->
+                <div class="mt-4">
+                    <h3>Where you'll be</h3>
+                    <div id="map" style="width: 100%; height: 400px; border-radius: 15px;"></div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
         const mapboxToken = '<%= mapboxToken %>';
         const coordinates = <%= JSON.stringify(listing.geometry.coordinates) %>;
-    
+
         if (mapboxToken && coordinates && coordinates.length === 2) {
             mapboxgl.accessToken = mapboxToken;
-    
+
             const map = new mapboxgl.Map({
                 container: 'map',
                 style: 'mapbox://styles/mapbox/streets-v11',
                 center: coordinates,
                 zoom: 9
             });
-    
+
             new mapboxgl.Marker()
                 .setLngLat(coordinates)
                 .addTo(map);
@@ -158,12 +172,11 @@
             console.error("Mapbox token or listing coordinates are missing or invalid.");
         }
     </script>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-
     <script src="/js/script.js"></script>
 </body>
 
-</html>
+
