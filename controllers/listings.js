@@ -121,7 +121,7 @@ module.exports.updateListing = async (req, res) => {
         );
 
         req.flash('success', 'Listing updated successfully!');
-        res.redirect(`/listings/${updatedListing._id}`);
+        res.redirect(`/listings`);
     } catch (error) {
         console.error('Error updating listing:', error);
         req.flash('error', 'Failed to update listing');
