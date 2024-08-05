@@ -44,7 +44,7 @@ const listingSchema = new Schema({
   },
   category: {
     type: [String],
-    enum: ['Castles', 'Mountains', 'Iconic Cities', 'Room', 'Boats', 'Arctic', 'Farms', 'Camping', 'Amazing Pools'],
+    // enum: ['Castles', 'Mountains', 'Iconic Cities', 'Room', 'Boats', 'Arctic', 'Farms', 'Camping', 'Amazing Pools'],
     required: true,
     default: [] // Default to an empty array if not provided
 }
