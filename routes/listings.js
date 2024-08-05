@@ -33,7 +33,7 @@ router.get("/:id", wrapAsync(listingController.showListing));
 router.get("/:id/edit", isLoggedIn, isOwner, wrapAsync(listingController.renderEditForm));
 
 // Update a specific listing
-router.put("/:id", 
+router.get("/:id", 
     isLoggedIn, 
     upload.single('listing[image]'), 
     isOwner, 
