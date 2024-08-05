@@ -58,24 +58,20 @@ module.exports.showListing = async (req, res) => {
 
 module.exports.createListing = async (req, res) => {
     try {
-        const { title, description, price, location, country, category } = req.body.listing;
+        const { title, description, price, location, country } = req.body.listing;
         const image = req.file ? { url: req.file.path, filename: req.file.filename } : undefined;
-        console.log("Received category:", category); //
-        // Ensure category is an array
-        const categories = Array.isArray(category) ? category : [];
-
+        
         const newListing = new Listing({
             title,
             description,
             price,
             location,
             country,
-            category: categories, // Ensure category is an array
             image,
             owner: req.user._id,
             geometry: {
                 type: 'Point',
-                coordinates: [/* Longitude, Latitude */] // Set appropriate coordinates if available
+                coordinates: [/* Longitude, Latitude */]
             }
         });
 
@@ -109,9 +105,8 @@ module.exports.renderEditForm = async (req, res) => {
 
 module.exports.updateListing = async (req, res) => {
     try {
-        const { title, description, price, location, country, category } = req.body.listing;
+        const { title, description, price, location, country } = req.body.listing;
         const image = req.file ? { url: req.file.path, filename: req.file.filename } : undefined;
-        console.log("Received category:", category); //
         const updatedListing = await Listing.findByIdAndUpdate(
             req.params.id,
             {
@@ -120,7 +115,6 @@ module.exports.updateListing = async (req, res) => {
                 price,
                 location,
                 country,
-                category: Array.isArray(category) ? category : [], // Ensure category is an array
                 image: image ? image : undefined,
             },
             { new: true }
