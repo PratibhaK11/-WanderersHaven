@@ -91,15 +91,15 @@ module.exports.renderEditForm = async (req, res) => {
         const listing = await Listing.findById(id);
         if (!listing) {
             req.flash("error", "Listing you requested for does not exist!");
-            return res.redirect("/listings");
+            return res.redirect("/listing");
         }
         let originalImageUrl = listing.image.url;
         originalImageUrl = originalImageUrl.replace("/upload", "/upload/w_250");
-        res.render("listings/edit.ejs", { listing, originalImageUrl });
+        res.render("listing/edit.ejs", { listing, originalImageUrl });
     } catch (error) {
         console.error('Error rendering edit form:', error);
         req.flash('error', 'Failed to load edit form');
-        res.redirect('/listings');
+        res.redirect('/listing');
     }
 };
 
@@ -134,10 +134,10 @@ module.exports.destroyListing = async (req, res) => {
         const { id } = req.params;
         await Listing.findByIdAndDelete(id);
         req.flash("success", "Listing Deleted!");
-        res.redirect("/listings");
+        res.redirect("/listing");
     } catch (error) {
         console.error('Error deleting listing:', error);
         req.flash('error', 'Failed to delete listing');
-        res.redirect('/listings');
+        res.redirect('/listing');
     }
 };
